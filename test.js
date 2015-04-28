@@ -78,4 +78,11 @@ describe('urn.test.js', function () {
             done();
         });
     });
+    describe('URN.fromUrlPath', function() {
+        it('should ignore starting slash', function() {
+            var urn = urnlib.fromUrlPath('/a/1');
+            expect(urn.getId()).to.equal('1');
+            expect(urn.getType()).to.equal('a');
+        });
+    });
 });
