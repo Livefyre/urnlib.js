@@ -3,8 +3,12 @@ module.exports = (function(app) {
         this.parts = parts || [];
     };
 
-    URN.prototype.toString = function() {
-        var stringParts = ['urn', 'livefyre'];
+    URN.prototype.toString = function(excludeNs) {
+        var stringParts = [];
+        if (!excludeNs) {
+            stringParts = ['urn', 'livefyre'];    
+        }
+        
         for (var i = 0; i < this.parts.length; i++) {
             var part = this.parts[i];
             if (part[0]) {
@@ -16,8 +20,17 @@ module.exports = (function(app) {
         return stringParts.join(':');
     };
 
+    URN.prototype.copy = function(type, id) {
+        var parts = [];
+        for (var i = 0; i < this.parts.length; i++) {
+            parts.push(Array.prototype.slice.call(this.parts[i]));
+        }
+        return new URN(parts);
+    };
+
     URN.prototype.add = function(type, id) {
         this.parts.push([type, id]);
+        return this;
     };
 
     URN.prototype.getParent = function(nLevels) {
@@ -86,18 +99,26 @@ module.exports = (function(app) {
         return new URN(result);
     };
 
-    var fromUrlPath = function(path) {
-        var chain = [];
-        path.split("/").forEach(function(part, idx) {
-            if (idx % 2 == 0) {
-                chain.push(part);
-                chain.push(":");
-            } else {
-                chain.push(part);
-                chain.push("=");
+    var fromUrlPath = function(path, networkParam) {
+        if (path.substr(0, 1) == '/') {
+            path = path.slice(1);
+        }
+        var parts = [];
+        var part = [];
+        if (networkParam) {
+            part.push(null);
+        }
+        path.split("/").forEach(function(elem) {
+            part.push(elem);
+            if (part.length == 2) {
+                parts.push(part);
+                part = [];
             }
         });
-        return parse(chain.slice(0, -1).join(''));
+        if (part.length > 0) {
+            parts.push(part);
+        }
+        return new URN(parts);
     };
     
     return {
