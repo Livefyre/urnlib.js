@@ -6,9 +6,9 @@ module.exports = (function(app) {
     URN.prototype.toString = function(excludeNs) {
         var stringParts = [];
         if (!excludeNs) {
-            stringParts = ['urn', 'livefyre'];    
+            stringParts = ['urn', 'livefyre'];
         }
-        
+
         for (var i = 0; i < this.parts.length; i++) {
             var part = this.parts[i];
             if (part[0]) {
@@ -48,12 +48,16 @@ module.exports = (function(app) {
         }
     };
 
+    URN.prototype.getRoot = function() {
+        return new URN([this.parts[0]]);
+    };
+
     URN.prototype.getType = function() {
         return this.parts[this.parts.length - 1][0]
     };
 
     URN.prototype.getId = function() {
-        return this.parts[this.parts.length - 1][1]
+        return this.parts[this.parts.length - 1][1];
     };
 
     URN.prototype.contains = function(urnOrUrnString) {
@@ -92,7 +96,7 @@ module.exports = (function(app) {
             if (compParts.length == 2) {
                 result.push(compParts);
             } else {
-                result.push([null, compParts]);
+                result.push([null, compParts[0]]);
             }
 
         }
@@ -120,7 +124,7 @@ module.exports = (function(app) {
         }
         return new URN(parts);
     };
-    
+
     return {
         parse: parse,
         fromUrlPath: fromUrlPath,
