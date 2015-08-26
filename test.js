@@ -4,6 +4,7 @@ var urnlib = require('./index.js');
 describe('urn.test.js', function() {
     var urnStr = 'urn:livefyre:livefyre.com:site=123456:collection=100000';
     var urn = urnlib.parse(urnStr);
+    var urn2 = urnlib.parse('urn:livefyre:livefyre.com:site=123456:collection=100000');
 
     describe('URN.parse', function() {
         it('Successfully parses a URN', function(done) {
@@ -28,6 +29,12 @@ describe('urn.test.js', function() {
         it('Successfully get a URN\'s parent(s) by name', function(done) {
             expect(urn.getParentByName('collection').toString()).to.equal(urnStr);
             expect(urn.getParentByName('site').toString()).to.equal('urn:livefyre:livefyre.com:site=123456');
+            done();
+        });
+    });
+    describe('URN.root', function () {
+        it('Successfully get a URN\'s root', function(done) {
+            expect(urn2.getRoot().toString()).to.equal('urn:livefyre:livefyre.com');
             done();
         });
     });

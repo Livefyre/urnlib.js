@@ -48,6 +48,10 @@ module.exports = (function(app) {
         }
     };
 
+    URN.prototype.getRoot = function() {
+        return new URN([this.parts[0]]);
+    };
+
     URN.prototype.getType = function() {
         return this.parts[this.parts.length - 1][0]
     };
