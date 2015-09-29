@@ -51,6 +51,13 @@ describe('urn.test.js', function() {
             done();
         });
     });
+    describe('URN.getIdByType', function() {
+        it('Successfully returns the right value for the provided type', function() {
+            expect(urn.getIdByType('doesnotexist')).to.be.undefined;
+            expect(urn.getIdByType('site')).to.equal('123456');
+            expect(urn.getIdByType('collection')).to.equal('100000');
+        });
+    });
     describe('URN.add', function() {
         it('Successfully add an element to a URN', function(done) {
             var urn = new urnlib.URN();

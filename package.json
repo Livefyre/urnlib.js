@@ -1,6 +1,6 @@
 {
   "name": "urnlib",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A Livefyre URN utility.",
   "main": "index.js",
   "engines": {
