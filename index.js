@@ -60,6 +60,14 @@ module.exports = (function(app) {
         return this.parts[this.parts.length - 1][1];
     };
 
+    URN.prototype.getIdByType = function(type) {
+        for (var i = 0; i < this.parts.length; i++) {
+            if (this.parts[i][0] === type) {
+                return this.parts[i][1];
+            }
+        }
+    };
+
     URN.prototype.contains = function(urnOrUrnString) {
         var urn = urnOrUrnString;
         if (typeof urn === 'string') {
