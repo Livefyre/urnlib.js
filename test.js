@@ -38,17 +38,34 @@ describe('urn.test.js', function () {
     });
   });
   describe('URN.getType', function () {
-    it('Successfully get a URN\'s type', function (done) {
+    it('Successfully get a URN\'s type', function () {
       expect(urn.getType()).to.equal('collection');
-      done();
     });
+    it('Successfully get a parent type by name', function () {
+      expect(urn.getType(null)).to.equal(null);
+      expect(urn.getType('site')).to.equal('site');
+      expect(urn.getId('missing')).to.equal(undefined);
+    });
+    it('Successfully get a parent type by index', function () {
+      expect(urn.getType(2)).to.equal(null);
+      expect(urn.getType(1)).to.equal('site');
+    });
+
   });
   describe('URN.getId', function () {
-    it('Successfully get a URN\'s ID', function (done) {
+    it('Successfully get a URN\'s ID', function () {
       expect(urn.getId()).to.equal('100000');
       // This should work for null-type parts too.
       expect(urnlib.parse('urn:livefyre:livefyre.com').getId()).to.equal('livefyre.com');
-      done();
+    });
+    it('Successfully get a parent ID by name', function () {
+      expect(urn.getId(null)).to.equal('livefyre.com');
+      expect(urn.getId('site')).to.equal('123456');
+      expect(urn.getId('missing')).to.equal(undefined);
+    });
+    it('Successfully get a parent ID by index', function () {
+      expect(urn.getId(2)).to.equal('livefyre.com');
+      expect(urn.getId(1)).to.equal('123456');
     });
   });
   describe('URN.add', function () {
