@@ -37,28 +37,45 @@ module.exports = (function (app) {
     if (nLevels === undefined) {
       nLevels = 1;
     }
-    return new URN(this.parts.slice(0, this.parts.length - nLevels));
-  };
-
-  URN.prototype.getParentByName = function (name) {
+    if (typeof nLevels === 'number') {
+      return new URN(this.parts.slice(0, this.parts.length - nLevels));
+    }
     for (var i = 1; i <= this.parts.length; i++) {
-
-      if (this.parts[this.parts.length - i][0] == name) {
+      if (this.parts[this.parts.length - i][0] == nLevels) {
         return this.getParent(i - 1);
       }
     }
+    return;
+  };
+
+  URN.prototype.getParentByName = function (name) {
+    return this.getParent(name);
   };
 
   URN.prototype.getRoot = function () {
     return new URN([this.parts[0]]);
   };
 
-  URN.prototype.getType = function () {
-    return this.parts[this.parts.length - 1][0]
+  URN.prototype.getType = function (parent) {
+    var urn = this;
+    if (parent !== undefined) {
+      urn = this.getParent(parent);
+    }
+    if (urn === undefined) {
+      return;
+    }
+    return urn.parts[urn.parts.length - 1][0];
   };
 
-  URN.prototype.getId = function () {
-    return this.parts[this.parts.length - 1][1];
+  URN.prototype.getId = function (parent) {
+    var urn = this;
+    if (parent !== undefined) {
+      urn = this.getParent(parent);
+    }
+    if (urn === undefined) {
+      return;
+    }
+    return urn.parts[urn.parts.length - 1][1];
   };
 
   URN.prototype.contains = function (urnOrUrnString) {
